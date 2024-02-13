@@ -7,10 +7,20 @@ var items = {};
 
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
+//       Todo.create(text, addTodo);
+// todo.create(text, addTodo)
+
 exports.create = (text, callback) => {
   var id = counter.getNextUniqueId();
   items[id] = text;
   callback(null, { id, text });
+
+  // looks at counter.txt, increments count in counter.txt by 1
+
+  // id = readcounter
+  // invoke getnextuniqueid
+
+
 };
 
 exports.readAll = (callback) => {

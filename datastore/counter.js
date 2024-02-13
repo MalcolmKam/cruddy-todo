@@ -17,6 +17,7 @@ const zeroPaddedNumber = (num) => {
 
 const readCounter = (callback) => {
   fs.readFile(exports.counterFile, (err, fileData) => {
+    // console.log(err, ' err ', Number(fileData), ' filedata');
     if (err) {
       callback(null, 0);
     } else {
@@ -38,13 +39,86 @@ const writeCounter = (count, callback) => {
 
 // Public API - Fix this function //////////////////////////////////////////////
 
+/**
+ *
+ * (err, id) => {
+      expect(err).to.be.null;
+      expect(id).to.exist;
+      done();
+    }
+ */
+
+
+
 exports.getNextUniqueId = () => {
-  counter = counter + 1;
-  return zeroPaddedNumber(counter);
+  readCounter((error, count) => {
+    if (error) {
+      throw ('error reading');
+    } else {
+      //increment count
+      count++;
+      //call write counter with the count
+      writeCounter(count, (error, counterString) => {
+        if (error) {
+          throw ('error writing');
+        } else {
+          console.log('REACHED END OF WRITECOUNTER', counterString);
+          callback(null, counterString); // addtoDom(ounterstring)
+        }
+      });
+    }
+  });
+
 };
 
-
+// writeCounter(count, (callback) => callback(null, counterString))
 
 // Configuration -- DO NOT MODIFY //////////////////////////////////////////////
 
 exports.counterFile = path.join(__dirname, 'counter.txt');
+
+// exports.getNextUniqueId = () => {
+
+//   var currentCount = readCounter((err, x) => {
+
+//     // resultof cb = callbackinvoked
+//     // writecounter(resultofprevcb)
+
+
+//   });
+//   console.log(currentCount, 'currentcount');
+//   writeCounter(currentCount, (err, counter) => {
+//     counter++;
+//   });
+
+
+//   // var count = readcounter()
+//   // does readcounter
+//     // read 0 -> return 0 out
+
+//     // writeCounter gets 00000 version of ^
+//     // callback sets new counter to 1
+
+//     // looks counter.txt,
+
+//   // counter = counter + 1;
+//   // return zeroPaddedNumber(counter);
+// };
+
+// exports.getNextUniqueId = (callback) => {
+//   readCounter((error, count) => {
+//     if (error) {
+//       throw ('error reading');
+//     } else {
+//       //increment count
+//       count++;
+//       //call write counter with the count
+//       writeCounter(count, (counterString) => {
+
+//         callback(counterString); // addtoDom(ounterstring)
+
+//       });
+//     }
+//   });
+
+// };
