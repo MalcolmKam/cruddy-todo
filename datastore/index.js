@@ -3,7 +3,7 @@ const path = require('path');
 const _ = require('underscore');
 const counter = require('./counter');
 
-var items = {};
+// var items = {};
 
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
@@ -11,16 +11,27 @@ var items = {};
 // todo.create(text, addTodo)
 
 exports.create = (text, callback) => {
-  var id = counter.getNextUniqueId();
-  items[id] = text;
-  callback(null, { id, text });
+  counter.getNextUniqueId((err, uniqueId) => {
+    fs.writeFile(path.join(exports.dataDir, `${uniqueId}.txt`), text, (err) => {
+      callback(null, {'id': uniqueId, 'text': text});
+    });
+  });
+  // // var id = counter.getNextUniqueId();
+  // console.log('ID should be here', id);
+  // items[id] = text;//possibly replace with writeFile
+  // callback(null, { id, text }); //replace with readFile
 
-  // looks at counter.txt, increments count in counter.txt by 1
+  // create a new text file that is named equal to id
+  //content of id file shold be text variable
+  //invoke writeFile
+  //parameters are exports.newFile and text
+  //desired output is a new text file
+  //callback retrieves the data from the text file
+  //pass the callback into readFile
 
-  // id = readcounter
-  // invoke getnextuniqueid
 
-
+  // readfile -> id -> writefile -> file w/ id, text || callback (file w/ id, text)
+  // ^^ dynamically create filename
 };
 
 exports.readAll = (callback) => {
@@ -59,6 +70,8 @@ exports.delete = (id, callback) => {
     callback();
   }
 };
+
+// path.join(dataDir, 'dyanmicIDfilename')
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
 
