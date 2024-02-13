@@ -39,36 +39,13 @@ const writeCounter = (count, callback) => {
 
 // Public API - Fix this function //////////////////////////////////////////////
 
-/**
- *
- * (err, id) => {
-      expect(err).to.be.null;
-      expect(id).to.exist;
-      done();
-    }
- */
-
-
-
-exports.getNextUniqueId = () => {
-  readCounter((error, count) => {
-    if (error) {
-      throw ('error reading');
-    } else {
-      //increment count
-      count++;
-      //call write counter with the count
-      writeCounter(count, (error, counterString) => {
-        if (error) {
-          throw ('error writing');
-        } else {
-          console.log('REACHED END OF WRITECOUNTER', counterString);
-          callback(null, counterString); // addtoDom(ounterstring)
-        }
-      });
-    }
+exports.getNextUniqueId = (callback) => {
+  readCounter((err, count) => {
+    count++;
+    writeCounter(count, (err, counterString) => {
+      callback(err, counterString);
+    });
   });
-
 };
 
 // writeCounter(count, (callback) => callback(null, counterString))
@@ -121,4 +98,35 @@ exports.counterFile = path.join(__dirname, 'counter.txt');
 //     }
 //   });
 
+// };
+
+/**
+ *
+ * (err, id) => {
+      expect(err).to.be.null;
+      expect(id).to.exist;
+      done();
+    }
+ */
+
+
+
+// exports.getNextUniqueId = () => {
+//   readCounter((error, count) => {
+//     if (error) {
+//       throw ('error reading');
+//     } else {
+//       //increment count
+//       count++;
+//       //call write counter with the count
+//       writeCounter(count, (error, counterString) => {
+//         if (error) {
+//           throw ('error writing');
+//         } else {
+//           console.log('REACHED END OF WRITECOUNTER', counterString);
+//           return counterString; // addtoDom(ounterstring)
+//         }
+//       });
+//     }
+//   });
 // };
